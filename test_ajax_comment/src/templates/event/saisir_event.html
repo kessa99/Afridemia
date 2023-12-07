@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+
+{% block title %}enregistrement de l'Evenement {% endblock %}
+
+{% block content %}
+
+<div class="pb-16">
+    <div class="bg-blue-500 text-white p-4 text-center">
+        Formulaire d'Evenement
+    </div>
+  
+    {% load crispy_forms_tags %}
+    {% load widget_tweaks %}
+    
+    <div class="mx-96">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for hidden_field in form.hidden_fields %}
+                {{ hidden_field }}
+            {% endfor %}
+            {% for field in form.visible_fields %}
+                <div class="m-4">
+                    {{ field.label_tag }}
+                    {% render_field field class="w-full h-full rounded-lg outline-none border border-solid border-gray-600 rounded-3xl text-base font-normal py-4 px-4 border-b border-gray-400 focus:border-lime-500 focus:border-b-2"|add_class:"my-custom-class" %}
+                    {% if field.help_text %}
+                        <small class="block w-full h-full rounded-lg outline-none border border-solid border-gray-600 rounded-3xl text-base font-normal py-0 px-4 border-b border-gray-400 focus:border-lime-500 focus:border-b-2">{{ field.help_text }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div>
+                <button type="submit" class="items-center text-center justify-center bg-blue-500 text-white px-4 py-2 rounded">Ajouter</button>
+                <a href="{% url 'home' %}" class="items-center text-center justify-center bg-blue-500 text-white px-4 py-2 rounded"> retour</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

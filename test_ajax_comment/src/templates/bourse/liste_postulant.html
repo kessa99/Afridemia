@@ -1,0 +1,38 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <h2 class="items-center justify-center">Liste des Postulants</h2>
+    {% if not postulant %}
+        <div class="p-20 bg-white w-fit rounded-md flex-col text-center text-black m-auto">
+            <i class="fa-solid fa-book text-blue-950 text-7xl"></i>
+            <p class="mt-2 p-2 rounded-md text-md text-center">
+                Aucun Postulant
+            </p>
+        </div>
+    {% else %}
+        <table class="w-full">
+            <thead>
+                <tr>
+                    <th class="py-2">nom</th>
+                    <th class="py-2">Email</th>
+                    <th class="py-2">contenu</th>
+                    <th class="py-2">date_creation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in postulant %}
+                    <tr class="align-center">
+                        <td class="py-2">{{ post.nom }}</td>
+                        <td class="py-2">{{ post.email }}</td>
+                        <td class="py-2">{{ post.contenu }}</td>
+                        <td class="py-2">{{ ost.date_creation }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
+    <div class="my-4 space-x-3">
+        <a href="{% url 'bourse:details_bourse_admin' bourse_id=bourse.id  %}" class="px-4 py-3 border-2 shadow-lg bg-white text-black hover:bg-black hover:text-white">Retour</a>
+    </div>
+{% endblock %}

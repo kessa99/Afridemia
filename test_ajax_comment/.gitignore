@@ -1,0 +1,54 @@
+class CommentDataView(View):
+    def get(self, request, *args, **kwargs):
+        template = loader.get_template("comments/views.html")
+        comments = Comment.objects.all()
+        comment_list = [{'comment': comment.comment, 'created_at': comment.created_at} for comment in comments]
+        return JsonResponse({'comments': comment_list})
+
+
+<script>
+$(document).ready(function () {
+        // Function to submit the comment form via AJAX
+        $('#formComment').submit(function (e) {
+            e.preventDefault(); // Prevent the default form submission
+            var form = $(this);
+
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if (data.message === 'success') {
+                        // Clear the textarea after successful submission
+                        form.find('textarea').val('');
+                        // Trigger a click event on the Save button to reload comments
+                        form.find('.btnSave').click();
+                    } else {
+                        console.log('Validation Error:', data.message)
+                        // Handle the case when form validation fails
+                        $('.mySpan').text('Field couldn\'t validate');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log('AJAX Error:', error);
+                    $('.mySpan').text('Error submitting the form');
+                }
+            });
+        });
+
+        // Function to load comments via AJAX on page load
+        $('.comment-content').load($('.comment-content').data('url'));
+
+        // Function to load comments via AJAX when the Save button is clicked
+        $('.btnSave').click(function () {
+            $('.comment-content').load($('.comment-content').data('url'));
+        });
+    });
+</script>
+
+
+
+{% include 'comments/views.html' %}
+{% include 'comments/index.html' %}

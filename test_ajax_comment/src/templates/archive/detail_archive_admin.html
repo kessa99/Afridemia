@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Detail de la archive{% endblock %}
+
+{% block content %}
+
+<div class=" my-16 border-2 border-gray-950 rounded-lg py-16 px-16">
+    <h2 class="bg-blue-500 text-white p-4 ">
+        Detail
+    </h2>
+  
+    <h1>{{ archive.titre }}</h1>
+    <p>publicateur : {{ archive.publicateur }}</p>
+    <p>ecole : {{ archive.ecole }}</p>
+    <p>matiere : {{ archive.matiere }}</p>
+    <p>examen : {{ archive.examen }}</p>
+    <p>pays : {{ archive.pays }}</p>
+    <p>fichier : {{ archive.fichier }}</p>
+    <p>niveau : {{ archive.niveau }}</p>
+
+    <div class="py-4">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </form>
+    </div>
+
+    <div class="space-x-4">
+        <a  href="{% url 'home' %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">back</a>
+        <a href="{% url 'modifie_archive' archive_id=archive.id %}" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">modifier</a>
+        <a href="{% url 'supprime_archive' archive_id=archive.id %}" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">supprimer</a>
+    </div>
+</div>
+
+{% endblock %}

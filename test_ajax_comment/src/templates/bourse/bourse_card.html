@@ -1,0 +1,23 @@
+{% load static %}
+<div
+  class="relative flex flex-col bg-white border hover:shadow-md rounded-xl transition duration-300 ease-in-out overflow-hidden group"
+>
+  <a href="{% url 'bourse:detail_bourse' obj.id  %}">
+    <i
+      class="absolute z-30 top-[130px] right-4 text-xl group-hover:text-white fa-solid fa-book-open transition duration-300 ease-in-out"
+    ></i>
+
+    <div class="mt-2 p-4 flex flex-col gap-1 justify-between">
+      <h4 class="text-black text-md font-bold">{{obj.titre}}</h4>
+      <p class="text-xs">{{obj.publicateur}}</p>
+      
+      <span class="text-xs">
+        <i class="fa-solid fa-thumbs-up text-sky-500"></i>
+        <button class="like-button bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition" data-bourse-id="{{ bourse.id }}">
+          <box-icon name='like' class="text-sky-500"></box-icon>
+          <span class="like-count">{{ obj.like_set.count }}</span> Likes
+        </button>
+      </span>
+    </div>
+  </a>
+</div>

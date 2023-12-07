@@ -1,0 +1,64 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+
+<section class="h-screen flex items-center justify-center my-40">
+    <div  class="">
+        {% if user.is_authenthicated %}
+        <div>     
+            <div class="container mx-auto p-8 text-cente">
+                <p  class="text-black font-semibold block md:inline"> Bienvenu Merci De Vous Connecter</p>
+                <a href="{% url 'login' %}" class="px-4 py-3 border-2 shadow-lg bg-white text-black hover:bg-black hover:text-white"> Connexion</a>
+                <a href="{% url 'signup' %}" class="px-4 py-3 border-2 shadow-lg bg-white text-black hover:bg-black hover:text-white"> Inscription</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="">
+            <div class="pb-16 mx-16 ">
+                <a href="{% url 'logout' %}" class="px-4 py-3 border-2 shadow-lg bg-white text-black hover:bg-black hover:text-white"> Deconnecter</a>
+
+                <div class="bg-blue-500 text-white p-4 text-5xl mt-2 rounded-lg text-center">
+                    <p  class="text-black font-semibold block md:inline"> Bienvenu {{ request.user.username }}</p> sur <br />
+                    Zone Bourse  Afridemia
+                </div>
+                <div class="mt-4 flex space-x-4">
+                    
+                    <a href="{% url 'bourse:saisie_bourse' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">Saisir Bourse</a>
+                    <a href="{% url 'bourse:liste_bourse' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">afficher Bourse pour entite</a>
+                    <a href="{% url 'bourse:liste_bourse_admin' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">afficher detail Bourse createur</a>
+                    
+                </div>
+
+            </div>
+
+            <div class="pb-16 mx-16 ">
+                <div class="bg-blue-500 text-white p-4 text-5xl mt-2 rounded-lg text-center">
+                    <p  class="text-black font-semibold block md:inline"> Bienvenu {{ request.user.username }}</p> sur <br />
+                    Zone Archive  Afridemia
+                </div>
+                <div class="mt-4 flex space-x-4">
+                    <a href="{% url 'archive:saisie_archive' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">Saisir Archive</a>
+                    <a href="{% url 'archive:liste_archive' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">afficher Archive pour entite</a>        
+                    <a href="{% url 'archive:liste_archive_admin' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">afficher Archive pour Admin</a>        
+                </div>
+            </div>
+
+            <div class="pb-16 mx-16 ">
+                <div class="bg-blue-500 text-white p-4 text-5xl mt-2 rounded-lg text-center">
+                    <p  class="text-black font-semibold block md:inline"> Bienvenu {{ request.user.username }}</p> sur <br />
+                    Zone Event Afridemia
+                </div>
+                <div class="mt-4 flex space-x-4">
+                    
+                    <a href="{% url 'event:saisir_event' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">Saisir Event</a>
+                    <a href="{% url 'event:list_event' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">afficher Event pour entite</a>        
+                    <a href="" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">afficher event pour Admin</a>        
+                </div>
+            </div>
+        </div>                    
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+

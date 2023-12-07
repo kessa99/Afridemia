@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Detail de la event{% endblock %}
+
+{% block content %}
+
+<div class="pb-16">
+    <div class="bg-blue-500 text-white p-4 ">
+        Detail de la event pour l'admin
+    </div>
+  
+    <h1> Evenement {{ event.type_event }}</h1>
+    <p>description : {{ event.description }}</p>
+    <p>categorie : {{ event.categorie }}</p>
+    <p>format de l'evenement  : {{ event.format_event }}</p>
+    <p>Date : {{ event.date_debut }} - {{ event.date_fin }}</p>
+    <p>Heure : {{ event.date_heure_debut }} - {{ event.date_heure_fin }}</p>
+    <p>billet : {{ event.billet }}</p>
+    <p>fuseau horaire : {{ event.fuseau_horaire }}</p>
+    <p>intervenant : {{ event.intervenant }}</p>
+
+    <div class="space-x-4">
+        <a  href="{% url 'home' %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">back</a>
+        <a  href="{% url 'event:modifie_event' event_id=event.id %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Modifier</a>
+        <a  href="{% url 'event:supprime_event' event_id=event.id %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Supprimer</a>
+        {% if event %}
+        <a href="{% url 'event:liste_participant' event_id=event.id %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">afficher les postulants</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

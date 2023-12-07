@@ -1,0 +1,133 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Detail de la bourse{% endblock %}
+{% load tailwind_filters %}
+{% block content %}
+
+<div class=" my-16 border-2 border-gray-950 rounded-lg py-16 px-16">
+    <div class="bg-blue-500 text-white p-4 ">
+        Detail de la bourse
+    </div>
+  
+    <h1>{{ bourse.titre }}</h1>
+    <p>publicateur : {{ bourse.publicateur }}</p>
+    <p>categorie : {{ bourse.categorie }}</p>
+    <p>financement : {{ bourse.financement }}</p>
+    <p>nature : {{ bourse.nature }}</p>
+    <p>lieu : {{ bourse.lieu }}</p>
+    <p>niveau : {{ bourse.niveau }}</p>
+    <p>description : {{ bourse.description }}</p>
+    <p>fichier_a_joindre : {{ bourse.fichier_a_joindre }}</p>
+
+    <div class="space-x-4">
+        <div class="flex">
+            <a href="{% url 'bourse:saisir_postulant' bourse_id=bourse.id %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition"> saisir postulant</a>
+            <a  href="{% url 'home' %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">back</a>
+            <div class="flex">
+                <span class="" id="like_count">{{bourse.like_count}}</span>
+                <button class="like-btn pl-4" id="like-button" value="{{bourse.id}}">
+                    <svg width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 14V20M8 20L4 20V9.99998H8L13.1956 3.93847C13.6886 3.3633 14.4642 3.11604 15.1992 3.29977L15.2467 3.31166C16.5885 3.64711 17.1929 5.21057 16.4258 6.36135L14 9.99998H18.5604C19.8225 9.99998 20.7691 11.1546 20.5216 12.3922L19.3216 18.3922C19.1346 19.3271 18.3138 20 17.3604 20M8 20H12" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="py-4">
+        <h3>
+            {% with commentaire.count as total_commentaire %}
+                {{ total_commentaire }} commentaire{{ total_commentaire|pluralize }}
+            {% endwith %}
+        </h3>
+    
+        <!-- liste_commentaires.html -->
+        <div id="commentaires">
+            {% for comment in commentaire %}
+                <div class="">
+                    <p><strong>{{ comment.auteur }}</strong> - {{ comment.date }}</p>
+                    <p>{{ comment.contenu }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    
+        <!-- Formulaire pour ajouter un commentaire -->
+        <form id="comment-form" method="POST" action="{% url 'bourse:ajouter_commentaire' bourse.id %}">
+            {% csrf_token %}
+            {{ comment_form | crispy }}
+            <button type="submit" class="py-4 border-2 bg-slate-400">Ajouter un commentaire</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- template.html -->
+<script>
+    $(document).ready(function() {
+        $('#comment-form').submit(function(event) {
+            event.preventDefault();
+            var form = $(this);
+            var url = form.attr('action');
+            var formData = form.serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        chargerCommentaires();
+                        form.trigger('reset');
+                    } else {
+                        alert('Erreur lors de l\'ajout du commentaire. Veuillez vérifier vos données.');
+                    }
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(xhr.status + ': ' + xhr.responseText);
+                }
+            });
+        });
+
+        function chargerCommentaires() {
+            var bourseId = '{{ bourse.id }}';
+            $.ajax({
+                type: 'GET',
+                url: '{% url "bourse:liste_commentaires" bourse_id=bourse.id %}',
+                success: function(response) {
+                    $('#commentaires').empty(); // Nettoyez le contenu actuel
+                    $.each(response.comments, function(index, comment) {
+                        var newComment = '<div class=""><p><strong>' + comment.auteur + '</strong> - ' + comment.date + '</p><p>' + comment.contenu + '</p></div>';
+                        $('#commentaires').append(newComment);
+                    });
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(xhr.status + ': ' + xhr.responseText);
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '#like-button', function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: '{% url "bourse:like" %}',
+        data: {
+            bourseId: $('#like-button').val(),  // Utilisez # au lieu de $
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            action: 'post'
+        },
+        success: function (json) {
+            document.getElementById("like_count").innerHTML = json['result'];
+        },
+        error: function (xhr, errmsg, err) {
+            console.log(xhr.status + ': ' + xhr.responseText);
+        }
+    });
+});
+
+</script>
+
+{% endblock %}
+

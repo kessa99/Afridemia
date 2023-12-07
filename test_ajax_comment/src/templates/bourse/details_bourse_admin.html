@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Detail de la bourse{% endblock %}
+
+{% block content %}
+
+<div class="pb-16">
+    <div class="bg-blue-500 text-white p-4 ">
+        Detail de la bourse pour l'admin
+    </div>
+  
+    <h1>{{ bourse.titre }}</h1>
+    <p>publicateur : {{ bourse.publicateur }}</p>
+    <p>categorie : {{ bourse.categorie }}</p>
+    <p>financement : {{ bourse.financement }}</p>
+    <p>nature : {{ bourse.nature }}</p>
+    <p>lieu : {{ bourse.lieu }}</p>
+    <p>niveau : {{ bourse.niveau }}</p>
+    <p>description : {{ bourse.description }}</p>
+    <p>publicateur : {{ bourse.publicateur }}</p>
+
+    <div class="space-x-4">
+        <a  href="{% url 'home' %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">back</a>
+        <a  href="{% url 'bourse:modifie_bourse' bourse_id=bourse.id %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Modifier</a>
+        <a  href="{% url 'bourse:supprime_bourse' bourse_id=bourse.id %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Supprimer</a>
+        {% if bourse %}
+        <a href="{% url 'bourse:liste_postulant' bourse_id=bourse.id %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">afficher les postulants</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

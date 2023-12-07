@@ -1,0 +1,75 @@
+{% load tailwind_filters %}
+
+<!-- liste_commentaires.html -->
+<div id="commentaires">
+    {% for commentaire in commentaires %}
+        <div class="">
+            <p><strong>{{ commentaire.auteur }}</strong> - {{ commentaire.date }}</p>
+            <p>{{ commentaire.contenu }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Formulaire pour ajouter un commentaire -->
+<form id="comment-form" method="POST" action="{% url 'ajouter_commentaire' %}">
+    <div class="py-4 border-2 bg-slate-400">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <button type="submit">Ajouter un commentaire</button>
+    </div>
+</form>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- template.html -->
+<script>
+    $(document).ready(function() {
+        $('#comment-form').submit(function(event) {
+            event.preventDefault();  // Empêche l'envoi du formulaire par défaut
+            
+            var form = $(this);
+            var url = form.attr('action');
+            var formData = form.serialize();
+            
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        // Réponse réussie, récupérer et afficher la liste des commentaires
+                        console.log(response);
+                        chargerCommentaires();
+                        form.trigger('reset');
+                        
+                        // Autres actions à effectuer
+                        // alert('Commentaire ajouté avec succès !');
+                    } else {
+                        // Gérer les erreurs de validation du formulaire
+                        alert('Erreur lors de l\'ajout du commentaire. Veuillez vérifier vos données.');
+                    }
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(xhr.status + ': ' + xhr.responseText);
+                }
+            });
+        });
+    
+        // Fonction pour charger et afficher la liste des commentaires
+        function chargerCommentaires() {
+            $.ajax({
+                type: 'GET',
+                url: '{% url "liste_commentaires" %}',  // Mettez à jour avec l'URL correcte
+                success: function(response) {
+                    // Remplacez le contenu de l'élément avec l'id 'commentaires' par la nouvelle liste de commentaires
+                    $('#commentaires').html(response);
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(xhr.status + ': ' + xhr.responseText);
+                }
+            });
+        }
+    });
+</script>
+
+

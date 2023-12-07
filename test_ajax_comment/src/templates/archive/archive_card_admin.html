@@ -1,0 +1,26 @@
+{% load static %}
+<div
+  class="relative flex flex-col bg-white border hover:shadow-md rounded-xl transition duration-300 ease-in-out overflow-hidden group"
+>
+  <a href="{% url 'detail_archive_admin' archive_id=arch.id  %}">
+    <i
+      class="absolute z-30 top-[130px] right-4 text-xl group-hover:text-white fa-solid fa-book-open transition duration-300 ease-in-out"
+    ></i>
+    <div class="w-full max-h-40 overflow-hidden text-center">
+      <img
+        class="w-full h-40 object-cover transition duration-500 group-hover:scale-110"
+        src="{% static 'img/entrefemme.jpg' %}"
+        alt="image"
+      />
+    </div>
+    <div class="mt-2 p-4 flex flex-col gap-1 justify-between">
+      <h4 class="text-black text-md font-bold">{{arch.title|title}}</h4>
+      <p class="text-xs">{{arch.publicateur|title}}</p>
+      <span class="text-xs text-green-600">{{arch.pays}}</span>
+      <span class="text-xs">
+        <i class="fa-solid fa-thumbs-up text-sky-500"></i>
+        0 telechargement
+      </span>
+    </div>
+  </a>
+</div>

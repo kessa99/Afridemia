@@ -1,0 +1,113 @@
+{% extends 'base/base.html' %}
+
+
+
+{% block title %}Event{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="px-8 pb-8 w-full max-w-[1350px] mx-auto">
+    <!--------------------------------------- mini navbar --------------------------------------->
+  
+    <nav
+      class="mx-auto my-4 flex flex-row justify-between items-center gap-4 text-xs w-full max-w-[1350px]"
+    >
+      <!-- {% if user.is_staff %} -->
+      <div class="flex gap-4">
+        <a
+          class="hover:text-green-300 transition ease-in duration-300"
+          href=""
+          >
+          hello<i class="fa-solid fa-house"></i>
+        </a>
+        /
+        <a
+          class="hover:text-green-400 transition ease-in duration-300"
+          href=""
+          >Livres</a
+        >
+      </div>
+      <!-- {% endif %} {% if user.is_authenticated %} -->
+      <div class="flex space-x-4">
+          <a href="" class="px-3 py-2 bg-blue-950 text-xs text-white hover:text-green-300 flex items-center rounded-lg transition duration-300 ease-in">Nouveau Livre<i class="fa-solid fa-plus ml-2"></i></a>
+          <a href="{% url 'home' %}" class="px-3 py-2 bg-blue-950 text-xs text-white hover:text-green-300 flex items-center rounded-lg transition duration-300 ease-in">home<i class="fa-solid fa-plus ml-2"></i></a>
+      </div>
+      <!-- {% endif %} -->
+    </nav>
+  
+    <!--------------------------------------- books --------------------------------------->
+    <section id="books" class="w-full flex flex-col xl:flex-row gap-8 text-left">
+      <div class="text-sm flex flex-col xl:w-[300px] gap-3 xl:fixed z-30">
+        <form
+          action=""
+          class="p-3 w-full bg-slate-300 rounded-xl flex xl:flex-col gap-4"
+        >
+          <input
+            placeholder="Titre"
+            name="query"
+            type="text"
+            class="px-4 py-2 rounded-md text-sm focus:bg-sky-100 w-full"
+          />
+          <input
+            placeholder="Auteur"
+            name="query"
+            type="text"
+            class="px-4 py-2 rounded-md text-sm focus:bg-sky-100 w-full"
+          />
+          <input
+            placeholder="Langue"
+            name="query"
+            type="text"
+            class="px-4 py-2 rounded-md text-sm focus:bg-sky-100 w-full"
+          />
+  
+          <select
+            name="query"
+            class="px-4 py-2 rounded-md text-sm focus:bg-sky-100 w-full"
+          >
+            <option value="" disabled selected>Telechargeable</option>
+            <option value="true">Oui</option>
+            <option value="false">Non</option>
+          </select>
+          <div class="flex gap-3">
+            <a
+              href=""
+              class="px-3 py-2 rounded-lg text-sm text-black hover:text-white hover:bg-blue-950 transition duration-300 ease-in"
+            >
+              <i class="fa-solid fa-rotate-right"></i>
+            </a>
+            <button
+              class="px-4 py-2 w-full bg-slate-200 text-black hover:bg-green-200 rounded-md transition duration-300 ease-in"
+              type="submit"
+            >
+              Filtrer <i class="fa-solid fa-filter"></i>
+            </button>
+          </div>
+        </form>
+
+
+
+      </div>
+  
+      <div class="xl:ml-80 w-full mx-auto">
+        {% if not event %}
+            <div class="p-20 bg-white w-fit rounded-md flex-col text-center text-black m-auto">
+                <i class="fa-solid fa-book text-blue-950 text-7xl"></i>
+                <p class="mt-2 p-2 rounded-md text-md text-center">
+                    Aucune Evenement disponible
+                </p>
+            </div>
+        {% else %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                {% for obj in event %}
+                <!--  -->
+                {% include 'event/event_card.html' %}
+                <!--  -->
+                {% endfor %}
+            </div>
+        {% endif %}
+      </div>
+    </section>
+  </div>
+    
+{% endblock %}

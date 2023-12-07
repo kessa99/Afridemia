@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class=" my-16  border-gray-950 rounded-lg py-16 px-16">
+    <h2>Confirmez la suppression</h2>
+    <p>Êtes-vous sûr de vouloir supprimer cette bourse {{ archive.titre}}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="pt-3">
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Confirmer la suppression</button>
+            <a href="{% url 'detail_archive_admin' archive_id=archive.id %}" class="bg-gray-800 text-white px-4 py-2 rounded">Retour</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
