@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Créer un sondage{% endblock %}
+
+{% block content %}
+
+<div class="pb-16">
+    <div class="bg-bleu-500 texte-blanc p-4 text-center">
+        Formulaire sondage
+    </div>
+
+    {% load crispy_forms_tags %}
+    {% load widget_tweaks %}
+
+    <div class="max-w-screen-md mx-auto p-8">
+        <h1>{{ question.question_text }}</h1>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <form action="{% url 'sondages:vote' question.id %}" method="post">
+            {% csrf_token %}
+            {% for choice in question.choice_set.all %}
+                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+            {% endfor %}
+            <input type="submit" value="Vote">
+        </form>
+    </div>
+</div>
+
+{% endblock %}

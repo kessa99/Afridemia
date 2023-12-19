@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Creer un sondage{% endblock %}
+
+{% block content %}
+
+<div class="pb-16">
+    <div class="bg-blue-500 text-white p-4 text-center">
+        Formulaire Bourse
+    </div>
+  
+    {% load crispy_forms_tags %}
+    {% load widget_tweaks %}
+    
+    <div class="max-w-screen-md mx-auto p-8">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Enregistrer</button>
+          </form>          
+    </div>
+</div>
+
+
+{% endblock %}

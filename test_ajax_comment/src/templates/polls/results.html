@@ -1,0 +1,38 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Créer un sondage{% endblock %}
+
+{% block content %}
+
+
+<div class="grid grid-cols-12">
+    <div class="col-span-8 mx-auto">
+        <div class="bg-white shadow-md p-4">
+            <div class="bg-gray-200 p-4">
+                <h3 class="text-lg font-semibold">Resultat de sondage</h3>
+            </div>
+
+            <div class="p-4">
+                <h3>{{ poll.question }}</h3>
+            </div>
+
+            <ul class="list-group">
+                <li class="list-group-item">{{ poll.option_one }} &mdash; <strong>{{ poll.option_one_count }}</strong></li>
+                <li class="list-group-item">{{ poll.option_two }} &mdash; <strong>{{ poll.option_two_count }}</strong></li>
+                <li class="list-group-item">{{ poll.option_three }} &mdash; <strong>{{ poll.option_three_count }}</strong></li>
+            </ul>
+
+            <div class="panel-footer">
+                Total &mdash; <strong>{{ poll.total }}</strong>
+            </div>
+
+            <div>
+                <a href="{% url 'sondages:index' %}"> retour</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

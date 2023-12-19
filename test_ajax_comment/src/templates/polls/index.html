@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Créer un sondage{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-12 gap-4">
+    <div class="col-span-8 col-start-3">
+        <div class="bg-white shadow-md p-4">
+            <div class="bg-gray-200 p-4">
+                <h3 class="text-lg font-semibold">Sondage disponible</h3>
+            </div>
+
+            <ul class="m-4">
+                {% for poll in polls %}
+                <li class="list-group-item flex justify-between items-center space-y-4">
+                    <strong>{{ poll.question }}</strong>
+                    <div class="space-x-2 ">
+                        <a href="{% url 'sondages:delete_poll' poll.id %}" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Supprimer</a>
+                        <a href="{% url 'sondages:update_poll' poll.id %}" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Modifier</a>
+                        <a href="{% url 'sondages:vote' poll_id=poll.id %}" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Voter</a>
+                        <a href="{% url 'sondages:results' poll_id=poll.id %}" class=" bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">voir le resultat</a>
+                        <a href="{% url 'home' %}" class=" bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">retour</a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

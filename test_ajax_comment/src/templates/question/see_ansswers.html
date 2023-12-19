@@ -1,0 +1,71 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Créer un sondage{% endblock %}
+
+{% block content %}
+
+
+<!-- <div class="wrapper">
+    <header class="text-2xl font-bold mb-4">  On Mange quoi </header>
+    <div class="poll-area space-y-4">
+        <input type="checkbox" name="poll" id="opt-1" class="mr-2">
+        <input type="checkbox" name="poll" id="opt-2" class="mr-2">
+        <input type="checkbox" name="poll" id="opt-3" class="mr-2">
+        <input type="checkbox" name="poll" id="opt-4" class="mr-2">
+
+         {% for answer in question.answers.all %} 
+        <label for="" data-answer="" class="block bg-gray-700 border border-gray-400 p-4 rounded-md">
+            <div class="flex items-center">
+                <input type="checkbox" name="poll" id="" class="mr-2">
+                <span class="text-lg font-medium ">RIWrthrshsrthrth</span>
+            </div>
+            <div class="flex items-center mt-2">
+                <div class="w-full bg-gray-300 h-3 rounded-md">
+                    <div class="bg-blue-500 h-full rounded-md" style="width: {{ answer.calculate_percentage }}%"></div>
+                </div>
+                <span class="ml-2">29%</span>
+            </div>
+        </label>
+         {% endfor %} 
+    </div>
+</div> -->
+
+<section class="bg-slate-500 flex flex-col h-screen items-center">
+    <div class="rounded-lg bg-white m-4 p-4 w-full">
+        <div class="flex justify-between px-10">
+            <a href="#" class="text-blue-500 hover:underline">Retour</a>
+            <a href="#" class="text-blue-500 hover:underline">Page d'accueil</a>
+        </div>
+        <div class="my-4 text-2xl font-bold">
+            <span>Titre:</span> On mange quoi aujourd'hui?
+        </div>
+        <div class="space-y-2">
+            <div class="flex items-center">
+                <input type="checkbox" name="poll" id="" class="mr-2">
+                <span class="text-lg font-medium text-gray-800">
+                    Mangue
+                </span>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" name="poll" id="" class="mr-2">
+                <span class="text-lg font-medium text-gray-800">Avocat</span>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" name="poll" id="" class="mr-2">
+                <span class="text-lg font-medium text-gray-800">Banane</span>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" name="poll" id="" class="mr-2">
+                <span class="text-lg font-medium text-gray-800">Poisson</span>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" name="poll" id="" class="mr-2">
+                <span class="text-lg font-medium text-gray-800">Moumou</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    
+{% endblock %}

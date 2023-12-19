@@ -1,0 +1,58 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Créer un sondage{% endblock %}
+
+{% block content %}
+
+<div class="grid grid-cols-12">
+    <div class="col-span-8 mx-auto">
+        <div class="bg-white shadow-md p-4">
+            <div class="bg-gray-200 p-4">
+                <h3 class="text-lg font-semibold">Votre vote</h3>
+            </div>
+
+            <div class="p-4">
+                <div class="grid grid-cols-12">
+                    <div class="col-span-12">
+                        <h2>{{ poll.question }}</h2>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-12">
+                    <div class="col-span-12">
+                        <hr />
+
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="flex space-x-2">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="poll" value="option1" class="form-radio">
+                                        <span class="ml-2">{{ poll.option_one }}</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="poll" value="option2" class="form-radio">
+                                        <span class="ml-2">{{ poll.option_two }}</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="poll" value="option3" class="form-radio">
+                                        <span class="ml-2">{{ poll.option_three }}</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <button type="submit" class="btn btn-info">
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

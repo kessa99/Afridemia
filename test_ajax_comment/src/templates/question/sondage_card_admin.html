@@ -1,0 +1,57 @@
+{% load static %}
+<table class="container">
+    <thead>
+        <tr>
+            <th>no.</th>
+            <th>Questions</th>
+            <th>Reponse</th>
+            <th>Liens</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for quest in  question_obj %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ quest.question_test }}</td>
+            <td>
+                <a class="waves-effect waves-light btn modal-trigger" href="#modal-{{forloop.counter}}">Resultat du sondage</a>
+                <!-- Modal Structure -->
+                <div id="modal-{{forloop.counter}}" class="modal">
+                    <div class="modal-content">
+                        <h4>Resultat du sondage</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Reponse</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for answer in question.answers.all %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{answer.answer_text}}</td>
+                                    <td>{{answer.calculate_percentage}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Accepter</a>
+                    </div>
+                </div>
+            </td>
+
+            <td>
+
+                <a href="/question/{{question.uid}}" target="_blank" class="waves-effect waves-light btn" >Ouvrir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

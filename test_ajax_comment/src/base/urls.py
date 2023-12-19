@@ -26,6 +26,9 @@ urlpatterns = [
     path('bourse/', include('Bourse.urls')),
     path('archive/', include('Archive.urls')),
     path('event/', include('Event.urls')),
+    path('sondage/', include('Sondage.urls')),
+    path('question/', include('question.urls')),
+    
 ]
 
 

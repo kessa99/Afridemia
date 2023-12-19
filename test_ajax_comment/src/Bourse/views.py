@@ -36,7 +36,6 @@ def modifie_bourse(request, bourse_id):
     return render(request, 'bourse/modifie_bourse.html', context)
 
 
-
 @login_required
 def supprime_bourse(request, bourse_id):
     bourse = get_object_or_404(Bourse, pk=bourse_id)
