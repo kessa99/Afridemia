@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+
+
+
+{% block title %}detail_poll{% endblock %}
+{% load static %}
+
+{% block content %}
+
+<div class="px-8 pb-8 w-full max-w-[1350px] mx-auto">
+    <!--------------------------------------- mini navbar --------------------------------------->
+  
+    <nav
+      class="mx-auto my-4 flex flex-row justify-between items-center gap-4 text-xs w-full max-w-[1350px]"
+    >
+      <!-- {% if user.is_staff %} -->
+      <div class="flex gap-4">
+        <a
+          class="hover:text-green-300 transition ease-in duration-300"
+          href=""
+          >
+          hello<i class="fa-solid fa-house"></i>
+        </a>
+        /
+        <a
+          class="hover:text-green-400 transition ease-in duration-300"
+          href=""
+          >Livres</a
+        >
+      </div>
+      <!-- {% endif %} {% if user.is_authenticated %} -->
+      <a
+        href=""
+        class="px-3 py-2 bg-blue-950 text-xs text-white hover:text-green-300 flex items-center rounded-lg transition duration-300 ease-in"
+        >Nouveau Livre<i class="fa-solid fa-plus ml-2"></i
+      ></a>
+      <a
+        href="{% url 'home' %}"
+        class="px-3 py-2 bg-blue-950 text-xs text-white hover:text-green-300 flex items-center rounded-lg transition duration-300 ease-in"
+        >Retour<i class="fa-solid fa-plus ml-2"></i
+      ></a>
+      <!-- {% endif %} -->
+    </nav>
+  
+    <!--------------------------------------- books --------------------------------------->
+   
+  
+      {% for elemt in votes %}
+        <p> voteur: {{ elemt.user.username }}  <br> </p>
+      {% endfor %}
+
+{% endblock %}

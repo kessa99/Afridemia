@@ -1,108 +1,83 @@
-{% extends 'base/base.html' %}
+{% load static %}
 
-{% block title %}Créer un sondage{% endblock %}
+<div class="wrapper">
 
-{% block content %}
-
-
-<div class="poll-area">
-    <input type="checkbox" name="poll" id="opt-1">
-    <input type="checkbox" name="poll" id="opt-2">
-    <input type="checkbox" name="poll" id="opt-3">
-    <input type="checkbox" name="poll" id="opt-4">
-
-    {% for answer in question.answers.all %}
-    <label for="opt-{{forloop.counter}}" data-answer="{{answer.uid}}" class="opt-{{forloop.counter}} border border-gray-300 p-3 rounded-md hover:border-gray-400 transition">
-        <div class="flex justify-between items-center">
-            <div class="flex items-center">
-                <span class="circle border-2 border-gray-300 h-4 w-4 rounded-full mr-2"></span>
-                <span class="text">{{answer.answer_text}}</span>
-            </div>
-            <span class="percent hidden">30%</span>
+    <header>{{ question.question_text }}</header>
+    <div class="poll-area">
+        {% for answer in question.answers.all %}
+        <div class="flex items-center space-x-4">
+          <!-- Texte de l'option -->
+          <label class="flex-grow justify-between">
+            <input type="checkbox" class="hidden" data-answer="{{ answer.uid }}" />
+            <span class="inline-block cursor-pointer select-none">
+              {{ answer.answer_text }}-{{ answer.counter }} 
+            </span>
+          </label>
         </div>
-        <div class="progress h-2 w-full bg-gray-300 mt-2 rounded-full hidden"></div>
-    </label>
-    {% endfor %}
+        {% endfor %}
+        <!-- Modal Footer -->
+        <div class="border-t px-4 py-2 flex justify-end">
+            <button x-on:click="open = false" class="px-3 py-1  rounded-md w-full sm:w-auto bg-blue-950 text-white hover:text-blue-950 hover:bg-white transition duration-300 ease-in "> Accept </button>
+          </div>
+    </div>
 </div>
+
 <script>
-    async function call_api(question_uid, answer_uid) {
-        console.log('Api called')
-         const rawResponse = await fetch('/api/save_question_result/', {
-             method: 'POST',
-             headers: {
-                 'Accept': 'application/json',
-                 'Content-Type': 'application/json',
-                 "X-CSRFToken": '{{ csrf_token }}'
-             },
-             body: JSON.stringify({
-                 csrfmiddlewaretoken: '{{ csrf_token }}' ,
-                 question_uid: question_uid,
-                 answer_uid: answer_uid
-             })
-         }).then(result => result.json())
-         .then(data => {
-             console.log(data)
+  document.addEventListener('DOMContentLoaded', function () {
+      // Sélectionnez toutes les cases à cocher
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-             var elements = document.querySelectorAll('.percent')
-             var progres = document.querySelectorAll('.progress')
-            for(var i =0;i<elements.length;i++){
-                elements[i].textContent = data.data[i] + '%'
-                progres[i].style = `--w:${data.data[i]};`
+      checkboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', function () {
+              const answerUid = this.dataset.answer;
 
-            }
-         })
-         // const content = await rawResponse.json();
+              // Envoyer une requête AJAX pour mettre à jour le compteur côté serveur
+              fetch(`/vote/${answeruid}/`, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'X-CSRFToken': getCookie('csrftoken'),  // Assurez-vous d'avoir une fonction pour récupérer le jeton CSRF
+                  },
+                  body: JSON.stringify({
+                      action: 'post',
+                      question_uid: '{{ question.uid }}',
+                      answer_uid: answeruid,
+                  }),
+              })
+              .then(response => response.json())
+              .then(data => {
+                console.log(data);
+                // Mettez à jour l'affichage si nécessaire
+                // Par exemple, mettez à jour le nombre de votes affiché à côté de l'option
+                const optionElement = document.querySelector(`[data-answer="${answerUid}"]`);
+                if (optionElement) {
+                  optionElement.nextElementSibling.textContent = data.result;
+                }
+              })
 
-         // console.log(content);
+              .catch(error => console.error('Error:', error));
+            });
+        });
 
-     }
-
-
-     const options = document.querySelectorAll("label");
-     var answer_uid = null
-     var question_uid = "{{question.uid}}"
-     for (let i = 0; i < options.length; i++) {
-         options[i].addEventListener("click", () => {
-             for (let j = 0; j < options.length; j++) {
-                 //console.log("Event added")
-                 answer_uid = options[i].dataset.answer
-                 // console.log(answer_uid)
-                 if (options[j].classList.contains("selected")) {
-                     options[j].classList.remove("selected");
-                 }
-             }
-
-             options[i].classList.add("selected");
-             for (let k = 0; k < options.length; k++) {
-                 options[k].classList.add("selectall");
-             }
-
-             let forVal = options[i].getAttribute("for");
-             let selectInput = document.querySelector("#" + forVal);
-             let getAtt = selectInput.getAttribute("type");
-             if (getAtt == "checkbox") {
-                 selectInput.setAttribute("type", "radio");
-             } else if (selectInput.checked == true) {
-                 options[i].classList.remove("selected");
-                 selectInput.setAttribute("type", "checkbox");
-             }
-
-             let array = [];
-             for (let l = 0; l < options.length; l++) {
-                 if (options[l].classList.contains("selected")) {
-                     array.push(l);
-                 }
-             }
-             if (array.length == 0) {
-                 for (let m = 0; m < options.length; m++) {
-                     options[m].removeAttribute("class");
-                 }
-             }
-             call_api(question_uid , answer_uid)
-             console.log(answer_uid)
-         });
-     }
- </script>
+      // Fonction pour récupérer le jeton CSRF depuis les cookies
+      function getCookie(name) {
+          var cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+              var cookies = document.cookie.split(';');
+              for (var i = 0; i < cookies.length; i++) {
+                  var cookie = cookies[i].trim();
+                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
+          }
+          return cookieValue;
+      }
+  });
+</script>
 
 
-{% endblock %}
+
+
+

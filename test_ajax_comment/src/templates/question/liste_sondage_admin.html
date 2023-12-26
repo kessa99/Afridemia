@@ -4,8 +4,9 @@
 
 {% block title %}Sondage{% endblock %}
 {% load static %}
-{% block content %}
 
+{% block content %}
+{% include 'question/css.html' %}
 <div class="px-8 pb-8 w-full max-w-[1350px] mx-auto">
     <!--------------------------------------- mini navbar --------------------------------------->
   
@@ -107,50 +108,102 @@
           </thead>
       
           <tbody>
-            {% for quest in questions %}
+            {% for question in questions %}
             <tr>
               <td class="border px-4 py-2">{{ forloop.counter }}</td>
-              <td class="border px-4 py-2">{{ quest.question_test }}</td>
+              <td class="border px-4 py-2">{{ question.question_text }}</td>
               <td class="border px-4 py-2">
-                <button @click="openModal = true" class="px-3 py-2 rounded-lg text-sm bg-blue-950 text-white hover:text-blue-950 hover:bg-white transition duration-300 ease-in">Resultat du sondage</button>
+                  <!-- component -->
+                <div class="">
+                  <div x-data="{ open: false }">
+
+
+                    <!-- Open modal button -->
+                    <button x-on:click="open = true" class="px-4 py-2 bg-blue-950 text-white hover:text-blue-950 hover:bg-white transition duration-300 ease-in rounded-md"> statistiques </button>
+
+
+                    <!-- Modal Overlay -->
+                    <div x-show="open" class="fixed inset-0 px-2 z-10 overflow-hidden flex items-center justify-center">
+                      <div x-show="open" x-transition:enter="transition-opacity ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-in duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+
+
+                      <!-- Modal Content -->
+                      <div x-show="open" x-transition:enter="transition-transform ease-out duration-300" x-transition:enter-start="transform scale-75" x-transition:enter-end="transform scale-100" x-transition:leave="transition-transform ease-in duration-300" x-transition:leave-start="transform scale-100" x-transition:leave-end="transform scale-75" class="bg-white rounded-md shadow-xl overflow-hidden max-w-md w-full sm:w-96 md:w-1/2 lg:w-2/3 xl:w-1/3 z-50">
+
+
+                        <!-- Modal Header -->
+                        <div class="bg-blue-950 text-white  px-4 py-2 flex justify-between">
+                          <h2 class="text-lg font-semibold">Resultat du sondage</h2>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <table class="w-full">
+                          <thead>
+                            <tr>
+                              <th class="border px-4 py-2">Id</th>
+                              <th class="border px-4 py-2">Reponse</th>
+                              <th class="border px-4 py-2">Nombre de vote</th>
+                            </tr>
+                          </thead>
       
-                <!-- Modal Structure -->
-                <div x-show="openModal" @click.away="openModal = false" id="modal-{{forloop.counter}}" class="fixed inset-0 z-50 flex items-center justify-center hidden">
-                  <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-      
-                  <div class="bg-white rounded-lg overflow-hidden max-w-md w-full">
-                    <div class="px-6 py-4">
-                      <h4 class="text-lg font-semibold">Resultat du sondage</h4>
-                      <table class="w-full">
-                        <thead>
-                          <tr>
-                            <th class="border px-4 py-2">Id</th>
-                            <th class="border px-4 py-2">Reponse</th>
-                            <th class="border px-4 py-2">Pourcentage</th>
-                          </tr>
-                        </thead>
-      
-                        <tbody>
-                          {% for answer in questions.answers.all %}
-                          <tr>
-                            <td class="border px-4 py-2">{{forloop.counter}}</td>
-                            <td class="border px-4 py-2">{{answer.answer_text}}</td>
-                            <td class="border px-4 py-2">{{answer.calculate_percentage}}</td>
-                          </tr>
-                          {% endfor %}
-                        </tbody>
-                      </table>
-                    </div>
-      
-                    <div class="px-6 py-4 bg-gray-100 border-t">
-                      <button @click="openModal = false" class="px-3 py-1 bg-blue-950 text-white rounded-md">Accepter</button>
+                          <tbody>
+                            {% for answer in question.answers.all %}
+                            <tr>
+                              <td class="border px-4 py-2">{{ forloop.counter }}</td>
+                              <td class="border px-4 py-2">{{ answer.answer_text }}</td>
+                              <td class="border px-4 py-2"> {{ answer.counter }} </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+        
+                        <!-- Modal Footer -->
+                        <div class="border-t px-4 py-2 flex justify-end">
+                          <button x-on:click="open = false" class="px-3 py-1  rounded-md w-full sm:w-auto bg-blue-950 text-white hover:text-blue-950 hover:bg-white transition duration-300 ease-in "> Accept </button>
+                        </div>
+
+
+                      </div>
                     </div>
                   </div>
                 </div>
               </td>
-      
               <td class="border px-4 py-2">
-                <a href="/question/{{question.uid}}" target="_blank" class="px-3 py-2 rounded-lg text-sm bg-blue-950 text-white hover:text-blue-950 hover:bg-white transition duration-300 ease-in">Ouvrir</a>
+                
+
+                <td class="border px-4 py-2">
+                  <!-- component -->
+                <div class="">
+                  <div x-data="{ open: false }">
+
+
+                    <!-- Open modal button -->
+                    <button x-on:click="open = true" class="px-4 py-2 bg-blue-950 text-white hover:text-blue-950 hover:bg-white transition duration-300 ease-in rounded-md"> voir/participer </button>
+
+
+                    <!-- Modal Overlay -->
+                    <div x-show="open" class="fixed inset-0 px-2 z-10 overflow-hidden flex items-center justify-center">
+                      <div x-show="open" x-transition:enter="transition-opacity ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-in duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+
+
+                      <!-- Modal Content -->
+                      <div x-show="open" x-transition:enter="transition-transform ease-out duration-300" x-transition:enter-start="transform scale-75" x-transition:enter-end="transform scale-100" x-transition:leave="transition-transform ease-in duration-300" x-transition:leave-start="transform scale-100" x-transition:leave-end="transform scale-75" class="bg-white rounded-md shadow-xl overflow-hidden max-w-md w-full sm:w-96 md:w-1/2 lg:w-2/3 xl:w-1/3 z-50">
+
+
+                        <!-- Modal Header -->
+                        <div class="bg-blue-950 text-white  px-4 py-2 flex justify-between">
+                          <h2 class="text-lg font-semibold">sondage</h2>
+                        </div>
+
+                        <!-- Modal Body -->
+                        
+                        {% include 'question/question.html' %}
+        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
               </td>
             </tr>
             {% endfor %}

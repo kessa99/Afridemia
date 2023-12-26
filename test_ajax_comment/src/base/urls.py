@@ -28,7 +28,8 @@ urlpatterns = [
     path('event/', include('Event.urls')),
     path('sondage/', include('Sondage.urls')),
     path('question/', include('question.urls')),
-    
+    path('poll_sondages/', include('poll_sondage.urls')),
+    path('science/', include('science.urls')),
 ]
 
 

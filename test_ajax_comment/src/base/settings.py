@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'Sondage',
     'question',
     'rest_framework',
+    'poll_sondage',
+    'science',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"

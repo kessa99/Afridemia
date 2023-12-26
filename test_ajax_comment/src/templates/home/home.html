@@ -3,8 +3,8 @@
 {% block content %}
 
 
-<section class="h-screen flex items-center justify-center my-40">
-    <div  class="">
+<section class="h-screen flex items-center justify-center">
+    <div  class="overflow-auto h-64">
         {% if user.is_authenthicated %}
         <div>     
             <div class="container mx-auto p-8 text-center">
@@ -81,6 +81,46 @@
                     <a href="" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">liste des Sondages entite</a>       
                 </div>
             </div>
+
+            <div class="pb-16 mx-16 ">
+                <div class="bg-blue-500 text-white p-4 text-5xl mt-2 rounded-lg text-center">
+                    <p  class="text-black font-semibold block md:inline"> Bienvenu {{ request.user.username }}</p> sur <br />
+                    le sondage 1.2 Afridemia
+                </div>
+                <div class="mt-4 flex space-x-4">
+                    
+                    <a href="{% url 'my_question:create_poll_index' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">Creer Sondage</a>
+                    <a href="{% url 'my_question:liste_sondage_admin_index' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">Sondages admin</a>       
+                    <a href="" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">Sondages entite</a>       
+                </div>
+            </div>
+
+            <div class="pb-16 mx-16 ">
+                <div class="bg-blue-500 text-white p-4 text-5xl mt-2 rounded-lg text-center">
+                    <p  class="text-black font-semibold block md:inline"> Bienvenu {{ request.user.username }}</p> sur <br />
+                    Revue Scientifique Afridemia
+                </div>
+                <div class="mt-4 flex space-x-4">
+                    
+                    <a href="{% url 'science:saisir_revue' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">Creer Une revue</a>
+                    <a href="" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">liste des revue admin</a>       
+                    <a href="{% url 'science:list_revue' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">liste des revue entite</a>       
+                </div>
+            </div>
+
+            <div class="pb-16 mx-16 ">
+                <div class="bg-blue-500 text-white p-4 text-5xl mt-2 rounded-lg text-center">
+                    <p  class="text-black font-semibold block md:inline"> Bienvenu {{ request.user.username }}</p> sur <br />
+                    Zone Agenda scolaire Afridemia
+                </div>
+                <div class="mt-4 flex space-x-4">
+                    
+                    <a href="" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">Creer Sondage</a>
+                    <a href="" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">liste des Sondages admin</a>       
+                    <a href="" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">liste des Sondages entite</a>       
+                </div>
+            </div>
+
         </div>                    
         {% endif %}
     </div>

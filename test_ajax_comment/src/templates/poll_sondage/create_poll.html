@@ -1,0 +1,100 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Créer un sondage{% endblock %}
+
+{% block content %}
+
+<section class="items-center justify-between mx-auto">
+    <div >
+        <div class="bg-blue-500 text-white p-4 text-center">
+            <h1>Bienvenu sur les Sondages d'Afridemia</h1>
+        </div>
+        <div class="flex space-x-4 m-4">
+            <a href="{% url 'my_question:liste_sondage_admin_index' %}" class="bg-blue-500 text-white py-2 px-4 ml-2 rounded-lg">Liste de sondage</a>
+        </div>
+        
+        <div class="container mx-auto">
+            <form class="w-full max-w-sm" method="POST">
+                {% csrf_token %}
+
+                <!-- PLACE POUR SAISIR LA QUESTION -->
+                <div class="flex items-center mb-4">
+                    <div class="w-full">
+                        <label for="question" class="block text-sm font-medium text-gray-700">Question</label>
+                        <input placeholder="Saisissez votre question" name="question" id="question" type="text" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                    </div>
+                </div>
+
+                <!-- Place pour saisir les elements de reponse -->
+                <div class="w-full mb-4">
+                    <div id="row">
+                        <div class=" py-2">
+                            <input type="text" name="choices" placeholder="votre reponse" class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+        
+                <div class=" items-center mb-4">
+
+                    <div id="newinput"></div>
+
+
+
+                </div>
+                <div class=" mb-8 space-y-4">
+
+                    <a href="{% url 'home' %}" class="bg-blue-500 text-white py-2 px-4 ml-2 rounded-lg">Retour</a>
+
+                    <button class="bg-blue-500 text-white py-2 px-4 rounded-lg" type="submit">Soumettre</button>
+                    
+                    <button id="rowAdder" type="button" class="bg-blue-500 text-white py-2 px-4 rounded-lg">
+                        <span class="bi bi-plus-square-dotted"></span>
+                        Ajouter
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+</section>
+
+
+{% if messages %}
+{% for message in messages %}
+
+<script>
+
+M.toast({
+        html: "{{ message }}"
+    })
+</script>
+    {% endfor %}
+    {% endif %}
+
+
+<script>
+    $("#rowAdder").click(function () {
+        newRowAdd =
+            '<div class="w-full mb-4">' +
+                '<div id="row">' +
+                    '<div class=" py-2">' +
+                        '<input type="text" name="choices" placeholder="votre reponse" class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none">' +
+                    '</div>' +
+                    '<button class="bg-blue-500 text-white py-2 px-4 ml-2 rounded-lg" id="DeleteRow" type="button">' +
+                        '<i class="bi bi-trash"></i>' +
+                        'Supprimer' +
+                    '</button>' +
+                '</div>' +
+            '</div>';
+
+
+        $('#newinput').append(newRowAdd);
+
+        // Ajoutez un nouvel écouteur pour le bouton de suppression sur la nouvelle ligne
+        $("body").on("click", "#DeleteRow", function () {
+            $(this).parents("#row").remove();
+        });
+    });
+</script>
+    
+{% endblock %}

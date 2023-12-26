@@ -1,0 +1,30 @@
+{% load static %}
+
+<div class="wrapper">
+    <header>{{ question.question }}</header>
+    <div class="poll-area">
+        <form method="post" action="{% url 'my_question:add_vote' question.id %}">
+            {% csrf_token %}
+            {% for choice in question.choices.all %}
+                <div class="flex items-center space-x-4">
+                    <label class="flex-grow justify-between">
+                        <input type="radio" class="hidden" value="{{ choice.id }}" name="choice" required>
+                        <span class="inline-block cursor-pointer select-none">
+                            {{ choice.option }}
+                        </span>
+                    </label>
+                </div>
+            {% endfor %}
+            <div class="flex space-x-4">
+                <button x-on:click="open = true" class="px-4 py-2 bg-blue-950 text-white hover:text-blue-950 hover:bg-white transition duration-300 ease-in rounded-md">
+                    Vote
+                 </button>
+                <div class="">
+                    <button x-on:click="open = false" class="px-4 py-2 rounded-md w-full sm:w-auto bg-blue-950 text-white hover:text-blue-950 hover:bg-white transition duration-300 ease-in "> close </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>

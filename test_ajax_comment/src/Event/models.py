@@ -4,7 +4,7 @@ from timezone_field import TimeZoneField
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-# Create your models here.
+# Create your models here
 
 class Event(models.Model):
     image = models.ImageField(blank=True, null=True, upload_to="images/")
