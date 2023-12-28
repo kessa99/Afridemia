@@ -5,7 +5,7 @@ app_name = 'event'
 
 urlpatterns = [
     # Pour les Event
-    path('list_event/', list_event, name='list_event'),
+    path('', list_event, name='list_event'),
     path('list_event_admin/', list_event_admin, name='list_event_admin'),
     path('saisir_event/', saisir_event, name='saisir_event'),
     path('detail_Event/<int:event_id>/', detail_Event, name='detail_Event'),

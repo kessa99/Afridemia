@@ -102,7 +102,7 @@ def details_event_admin(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     participant = Participant.objects.filter(event=event)
     commentaire = Comment.objects.filter(event=event)
-    return render(request, 'event/details_event_admin.html', {'event': event, 'participant': participant, 'commentaire':commentaire})
+    return render(request, 'event/details_Event_admin.html', {'event': event, 'participant': participant, 'commentaire':commentaire})
 
 @login_required
 def saisir_participant(request, event_id):
@@ -114,10 +114,10 @@ def saisir_participant(request, event_id):
             participant = form.save(commit=False)
             participant.event = event
             participant.save()
-            return redirect('', event_id=event_id)
+            return redirect('event:detail_Event', event_id=event_id)
     else:
         form = ParticipantForm()
-    context = {'form': form, 'participant':participant, 'form':form}
+    context = { 'event':event, 'form': form}
     return render(request, 'event/saisir_participant.html', context)
 
 @login_required

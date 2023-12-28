@@ -10,13 +10,14 @@ class Archive(models.Model):
     titre = models.CharField(max_length=255)
     publicateur = models.CharField(max_length=255)
     ecole = models.CharField(max_length=255)
-    matiere = models.CharField(max_length=255, choices=SUBJECT_CHOICES)
+    matiere = models.CharField(max_length=255)
     examen = models.CharField(max_length=255)
-    pays = models.CharField(max_length=255, choices=AFRICAN_COUNTRIES)
+    pays = models.CharField(max_length=255)
+    niveau = models.CharField(max_length=255)
     fichier = models.FileField(upload_to='archive_files/')
-    niveau = models.CharField(max_length=4, choices=EXAM_CHOICES)
     archive_likes = models.ManyToManyField(User, related_name='archive_like', default="None", blank="True")
     archive_like_count = models.BigIntegerField(default='0')
+    download_count = models.PositiveIntegerField(default=0)
     
     def number_like(self):
         return self.archive_likes.count()

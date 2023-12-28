@@ -5,7 +5,7 @@ class RevuForm(forms.ModelForm):
     class Meta:
         model = Revue
         fields = '__all__'
-        exclude=('likes_revue', 'like_count_revu',)
+        exclude=('likes_revue', 'like_count_revu', 'download_count',)
 
 class CommentRevuForm(forms.ModelForm):
     class Meta:

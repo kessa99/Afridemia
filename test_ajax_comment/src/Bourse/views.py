@@ -41,7 +41,7 @@ def supprime_bourse(request, bourse_id):
     bourse = get_object_or_404(Bourse, pk=bourse_id)
     if request.method == 'POST':
         bourse.delete()
-        return redirect('liste_bourse')
+        return redirect('bourse:liste_bourse_admin')
     return render(request, 'bourse/supprime_bourse.html', {'bourse': bourse})
 
 

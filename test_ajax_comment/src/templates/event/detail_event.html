@@ -4,29 +4,24 @@
 {% load tailwind_filters %}
 {% block content %}
 
-<div class=" my-16 border-2 border-gray-950 rounded-lg py-16 px-16">
-    <div class="bg-blue-500 text-white p-4 ">
-        Detail de la event
+<div class=" my-16 py-16 px-16">
+    <div class="bg-blue-500 text-white p-4 font-bold text-4xl text-center ">
+        Evenement {{ event.categorie }} par {{ event.organisateur }}
     </div>
   
-    <div class="bg-blue-500 text-white p-4 ">
-        Detail de la event pour l'admin
-    </div>
-  
-    <h1> Evenement {{ event.type_event }}</h1>
-    <p>description : {{ event.description }}</p>
-    <p>categorie : {{ event.categorie }}</p>
-    <p>format de l'evenement  : {{ event.format_event }}</p>
-    <p>Date : {{ event.date_debut }} - {{ event.date_fin }}</p>
-    <p>Heure : {{ event.date_heure_debut }} - {{ event.date_heure_fin }}</p>
-    <p>billet : {{ event.billet }}</p>
-    <p>fuseau horaire : {{ event.fuseau_horaire }}</p>
-    <p>intervenant : {{ event.intervenant }}</p>
+    <p class="bg-gray-500 mt-2 p-3"> <span class="font-bold text-3xl">  Evenement :</span> <br>{{ event.type_event }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">   description : </span> <br>{{ event.description }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">   format de l'evenement  : </span> <br>{{ event.format_event }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">   Date : </span> <br>{{ event.date_debut }} - {{ event.date_fin }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">   Heure : </span> <br>{{ event.date_heure_debut }} - {{ event.date_heure_fin }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">   billet : </span> <br>{{ event.billet }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">   fuseau horaire : </span> <br>{{ event.fuseau_horaire }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">   intervenant : </span> <br>{{ event.intervenant }}</p>
 
     <div class="space-x-4">
         <div class="flex">
             <a href="{% url 'event:saisir_participant' event_id=event.id %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition"> saisir postulant</a>
-            <a  href="{% url 'home' %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">back</a>
+            <a  href="{% url 'event:list_event' %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">back</a>
             <div class="flex">
                 <span class="" id="like_count">{{event.number_like}}</span>
                 <button class="like-btn pl-4" id="like-button" value="{{event.id}}">

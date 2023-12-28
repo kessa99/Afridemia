@@ -1,0 +1,19 @@
+{% load static %}
+<div
+  class="relative flex flex-col bg-white border hover:shadow-md rounded-xl transition duration-300 ease-in-out overflow-hidden group"
+>
+  <a href="{% url 'science:details_revue_admin' obj.id  %}">
+    <i
+      class="absolute z-30 top-[130px] right-4 text-xl group-hover:text-white fa-solid fa-book-open transition duration-300 ease-in-out"
+    ></i>
+
+    <div class="mt-2 p-4 flex flex-col gap-1 justify-between">
+      <h4 class="text-black text-md font-bold">{{obj.titre}}</h4>
+      <p class="text-xs">{{obj.authors}}</p>
+      <div class="flex">
+        <span class="my-4 bg-gray-800 text-white text-xs py-2 px-2 mx-2 rounded-lg hover:bg-blue-600 transition" id="like_count">nombre like: {{ obj.likes_revue.count }}</span>
+        <span class="my-4 bg-gray-800 text-white text-xs py-2 px-2 mx-2 rounded-lg hover:bg-blue-600 transition" id="like_count">nombre telechargement: {{ obj.download_count }}</span>
+      </div>
+    </div>
+  </a>
+</div>

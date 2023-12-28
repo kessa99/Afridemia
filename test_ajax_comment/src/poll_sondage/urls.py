@@ -8,4 +8,5 @@ urlpatterns = [
     path('<str:pk>/', details_poll, name='details_poll'),
     path('create_poll_index/', create_poll_index, name="create_poll_index"),
     path('add_vote/<str:id>/', add_vote, name='add_vote'),
+    path('question/<int:question_id>/', question_delete, name='question_delete'),
 ]

@@ -1,7 +1,8 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-    <h2 class="items-center justify-center">Liste des Postulants</h2>
+<div class="my-16 py-16 px-16">
+    <h2 class="font-bold text-4xl text-center">Liste des Postulants</h2>
     {% if not postulant %}
         <div class="p-20 bg-white w-fit rounded-md flex-col text-center text-black m-auto">
             <i class="fa-solid fa-book text-blue-950 text-7xl"></i>
@@ -25,7 +26,7 @@
                         <td class="py-2">{{ post.nom }}</td>
                         <td class="py-2">{{ post.email }}</td>
                         <td class="py-2">{{ post.contenu }}</td>
-                        <td class="py-2">{{ ost.date_creation }}</td>
+                        <td class="py-2">{{ post.date_creation }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -33,6 +34,7 @@
 
     {% endif %}
     <div class="my-4 space-x-3">
-        <a href="{% url 'bourse:details_bourse_admin' bourse_id=bourse.id  %}" class="px-4 py-3 border-2 shadow-lg bg-white text-black hover:bg-black hover:text-white">Retour</a>
+        <a href="{% url 'bourse:details_bourse_admin' bourse_id=bourse.id  %}" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Retour</a>
     </div>
+</div>
 {% endblock %}

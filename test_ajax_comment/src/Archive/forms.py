@@ -5,7 +5,7 @@ class ArchiveForm(forms.ModelForm):
     class Meta:
         model = Archive
         fields = '__all__'
-        exclude=('archive_likes', 'archive_like_count',) 
+        exclude=('archive_likes', 'archive_like_count', 'download_count',) 
 
 class ArchiveCommentForm(forms.ModelForm):
     class Meta:

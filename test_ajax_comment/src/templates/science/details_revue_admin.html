@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Detail de la Revue{% endblock %}
+{% load tailwind_filters %}
+{% block content %}
+
+<div class=" my-16 border-2 border-gray-950 rounded-lg py-16 px-16">
+    <div class="bg-blue-500 text-white p-4 font-bold text-4xl text-center">
+        {{ revue.titre }} par {{ revue.authors }}
+    </div>
+    <div class="space-y-4">
+        <p class="bg-gray-500 mt-2 rounded-lg p-3"> <span class="font-bold text-3xl"> Resume :</span> <br> {{ revue.summary }}</p>
+        <p class="bg-gray-500 mt-2 rounded-lg p-3"> <span class="font-bold text-3xl"> methodologie :</span>  <br> {{ revue.methodology }}</p>
+        <p class="bg-gray-500 mt-2 rounded-lg p-3"> <span class="font-bold text-3xl"> resultat : </span>  <br> {{ revue.result }}</p>
+        <p class="bg-gray-500 mt-2 rounded-lg p-3"> <span class="font-bold text-3xl"> Conclusion : </span>  <br> {{ revue.Conclusion }}</p>
+        <p class="bg-gray-500 mt-2 rounded-lg p-3"> <span class="font-bold text-3xl"> bibliographie :</span>  <br> {{ revue.bibliography }}</p>
+        <p class="bg-gray-500 mt-2 rounded-lg p-3"> <span class="font-bold text-3xl"> thanks :</span>  <br> {{ revue.thanks }}</p>
+        <p class="bg-gray-500 mt-2 rounded-lg p-3"> <span class="font-bold text-3xl"> conflict :</span>  <br> {{ revue.conflict }}</p>
+        <p class="bg-gray-500 mt-2 rounded-lg p-3"> <span class="font-bold text-3xl"> declarations :</span>  <br> {{ revue.declarations }}</p>
+
+        <div class="bg-gray-500 flex">
+            <p class=" mt-2 rounded-lg p-3"> <span class="font-bold text-3xl"> file :</span>  <br> {{ revue.file }}</p>
+        </div>
+    </div>
+
+
+
+    <div class="space-x-4">
+        <div class="flex">
+            <a  href="{% url 'home' %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">back</a>
+            <a  href="{% url 'science:modifie_revue' revue_id=revue.id %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">modifier</a>
+            <a  href="{% url 'science:supprime_revue' revue_id=revue.id %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">supprimer</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+

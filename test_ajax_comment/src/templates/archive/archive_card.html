@@ -19,11 +19,13 @@
       <span class="text-xs text-green-600">{{arch.pays}}</span>
       <span class="text-xs">
         <i class="fa-solid fa-thumbs-up text-sky-500"></i>
-        0 telechargement
+        {{ arch.download_count }} telechargement
       </span>
       <span class="text-xs">
         <i class="fa-solid fa-thumbs-up text-sky-500"></i>
-        <span>{{ archive.like_set.count }}</span> Likes
+        <span>{{ arch.number_like }}</span> Likes
+         <br>
+        
       </span>
     </div>
   </a>

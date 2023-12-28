@@ -1,14 +1,29 @@
 {% extends 'base/base.html' %}
 
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
 {% block content %}
-<div class=" my-16 border-2 border-gray-950 rounded-lg py-16 px-16">
-    <h2>Mettre à jour la bourse</h2>
-    <form method="post" enctype="multipart/form-data">
+<div class=" my-16 py-16 px-16">
+    <h2 class="font-bold text-4xl text-center">Mettre à jour la bourse</h2>
+
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field }}
+        {% endfor %}
+        {% for field in form.visible_fields %}
+            <div class="m-4">
+                {{ field.label_tag }}
+                {% render_field field class="w-full h-full rounded-lg outline-none border border-solid border-gray-600 rounded-3xl text-base font-normal py-4 px-4 border-b border-gray-400 focus:border-lime-500 focus:border-b-2"|add_class:"my-custom-class" %}
+                {% if field.help_text %}
+                    <small class="block w-full h-full rounded-lg outline-none border border-solid border-gray-600 rounded-3xl text-base font-normal py-0 px-4 border-b border-gray-400 focus:border-lime-500 focus:border-b-2">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
         <div class="my-4 space-x-3">
             <button class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Mettre a jour</button>
-            <a href="{% url 'bourse:details_bourse_admin' bourse_id=bourse.id  %}" class="px-4 py-3 border-2 shadow-lg bg-white text-black hover:bg-black hover:text-white">Retour</a>
+            <a href="{% url 'bourse:details_bourse_admin' bourse_id=bourse.id  %}" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Retour</a>
         </div>
     </form>
 </div>

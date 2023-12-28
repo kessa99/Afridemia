@@ -42,26 +42,12 @@ def details_poll(request, pk):
     context = {'poll':poll, 'votes':votes}
     return render(request, 'poll_sondage/details_poll.html', context)
 
-# @login_required
-# def vote(request, sond_id):
-#     question = get_object_or_404(Question, id=sond_id)
-#     options = question.choices.all()
+@login_required
+def question_delete(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    question.delete()
+    return redirect('my_question:liste_sondage_admin_index')
 
-#     if request.method == 'POST':
-#         selected_option_id = request.POST.get('choice')
-
-#         if selected_option_id:
-#             selected_option = options.get(id=selected_option_id)
-#             selected_option.vote += 1
-#             selected_option.save()
-
-#             messages.success(request, 'Votre vote a été enregistré avec succès.')
-#             return redirect('my_question:result', sond_id)  # Rediriger vers la page de résultats
-
-#         else:
-#             messages.error(request, 'Veuillez sélectionner une option avant de voter.')
-
-#     return render(request, 'poll_sondage/question.html', {'question_result': question, 'option_result': options})
 
 @login_required
 def add_vote(request, id):

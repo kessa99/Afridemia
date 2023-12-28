@@ -1,6 +1,7 @@
 {% extends 'base/base.html' %}
 
 {% load get_choices get_choice_percentage get_total_vote from poll_getters %}
+{% load poll_getters %}
 
 {% block title %}Sondage{% endblock %}
 {% load static %}
@@ -104,6 +105,7 @@
               <th class="border px-4 py-2">Questions</th>
               <th class="border px-4 py-2">Reponse</th>
               <th class="border px-4 py-2">Sondage</th>
+
             </tr>
           </thead>
       
@@ -111,7 +113,9 @@
             {% for question in questions %}
             <tr>
               <td class="border px-4 py-2">{{ forloop.counter }}</td>
+
               <td class="border px-4 py-2">{{ question.question }}</td>
+
               <td class="border px-4 py-2">
                   <!-- component -->
                 <div class="">
@@ -147,22 +151,24 @@
                           </thead>
       
                           <tbody>
-                            {% for choice in question.choices.all %}
+                          {% for choice in question.choices.all %}
                             <tr>
                               {% with vote_percentage=choice.id|get_choice_percentage %}
-                              <td class="border px-4 py-2">{{ forloop.counter }}</td>
-                              <td class="border px-4 py-2">{{ choice.option }}</td>
-                              <td class="border px-4 py-2"> {{ vote_percentage|length }} </td>
+                                {% with total_votes=question.id|get_total_vote %}
+                                  <td class="border px-4 py-2">{{ forloop.counter }}</td>
+                                  <td class="border px-4 py-2">{{ choice.option }}</td>
+                                  <td class="border px-4 py-2">{{ vote_percentage|calculate_percentage:total_votes|floatformat:2 }}%</td>
+                                {% endwith %}
                               {% endwith %}
                             </tr>
-
-                            {% endfor %}
+                          {% endfor %}
                           </tbody>
                         </table>
         
                         <!-- Modal Footer -->
-                        <div class="border-t px-4 py-2 flex justify-end">
+                        <div class="border-t px-4 py-2 flex justify-between">
                           <button x-on:click="open = false" class="px-3 py-1  rounded-md w-full sm:w-auto bg-blue-950 text-white hover:text-blue-950 hover:bg-white transition duration-300 ease-in "> Accept </button>
+                          <a href="{% url 'my_question:question_delete' question.id %}" class="px-3 py-1  rounded-md w-full sm:w-auto bg-blue-950 text-white hover:text-blue-950 hover:bg-white transition duration-300 ease-in "> Supprimer</a>
                         </div>
 
                       </div>
@@ -170,6 +176,7 @@
                   </div>
                 </div>
               </td>
+
               <td class="border px-4 py-2">
                 
 
@@ -207,6 +214,8 @@
                 </div>
               </td>
               </td>
+
+
             </tr>
             {% endfor %}
           </tbody>

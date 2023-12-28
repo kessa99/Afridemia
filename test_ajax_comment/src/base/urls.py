@@ -30,6 +30,7 @@ urlpatterns = [
     path('question/', include('question.urls')),
     path('poll_sondages/', include('poll_sondage.urls')),
     path('science/', include('science.urls')),
+    path('agenda/', include('Agenda.urls')),
 ]
 
 
@@ -37,3 +38,4 @@ if settings.DEBUG:
     #a ne pas lancer quand on est en production
     from django.conf.urls.static import static
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

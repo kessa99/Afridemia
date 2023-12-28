@@ -4,20 +4,21 @@
 
 {% block content %}
 
-<div class=" my-16 border-2 border-gray-950 rounded-lg py-16 px-16">
-    <h2 class="bg-blue-500 text-white p-4 ">
-        Detail
+<div class=" my-16 py-16 px-16">
+    <h2 class="bg-blue-500 text-white p-4 font-bold text-4xl text-center ">
+        {{ archive.titre }} par {{ archive.publicateur }}
     </h2>
-  
-    <h1>{{ archive.titre }}</h1>
-    <p>publicateur : {{ archive.publicateur }}</p>
-    <p>ecole : {{ archive.ecole }}</p>
-    <p>matiere : {{ archive.matiere }}</p>
-    <p>examen : {{ archive.examen }}</p>
-    <p>pays : {{ archive.pays }}</p>
-    <p>fichier : {{ archive.fichier }}</p>
-    <p>niveau : {{ archive.niveau }}</p>
 
+    <p class="bg-gray-500 mt-2 p-3"> <span class="font-bold text-3xl">ecole :</span>  {{ archive.ecole }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">matiere :</span>  {{ archive.matiere }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">examen : </span> {{ archive.examen }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">pays :</span>  {{ archive.pays }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">niveau :</span>  {{ archive.niveau }}</p>
+    
+    <div class="bg-gray-500 flex">
+        <p class=" rounded-lg p-3"> <span class="font-bold text-3xl"> fichier_a_joindre :</span>  <br> {{ archive.fichier }}</p>
+        <button id="telecharger-revue" class="bg-gray-800 text-white text-xs m-6 py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Telecharger</a>
+    </div>
     <div class="py-4">
         <form method="post">
             {% csrf_token %}
@@ -27,8 +28,8 @@
 
     <div class="space-x-4">
         <a  href="{% url 'home' %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">back</a>
-        <a href="{% url 'modifie_archive' archive_id=archive.id %}" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">modifier</a>
-        <a href="{% url 'supprime_archive' archive_id=archive.id %}" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">supprimer</a>
+        <a href="{% url 'archive:modifie_archive' archive_id=archive.id %}" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">modifier</a>
+        <a href="{% url 'archive:supprime_archive' archive_id=archive.id %}" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">supprimer</a>
     </div>
 </div>
 

@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class=" my-16 py-16 px-16 text-center space-y-4">
+    <h2 class="font-bold text-4xl ">Confirmez la suppression</h2>
+    <p>Êtes-vous sûr de vouloir supprimer {{ revue.titre }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="pt-3">
+            <button type="submit" class="bg-red-500 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:text-red-500 hover:bg-white transition">Confirmer la suppression</button>
+            <a href="{% url 'science:details_revue_admin' revue_id=revue.id %}" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Retour</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

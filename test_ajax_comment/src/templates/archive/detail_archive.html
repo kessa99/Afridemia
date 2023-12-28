@@ -4,21 +4,22 @@
 {% load tailwind_filters %}
 {% block content %}
 
-<div class=" my-16 border-2 border-gray-950 rounded-lg py-16 px-16">
-    <div class="bg-blue-500 text-white p-4 ">
-        Detail
+<div class="  my-16 py-16 px-16">
+    <div class="bg-blue-500 text-white p-4 font-bold text-4xl text-center">
+        {{ archive.titre }} par {{ archive.publicateur }}
     </div>
   
-    <h1>{{ archive.titre }}</h1>
-    <p>publicateur : {{ archive.publicateur }}</p>
-    <p>ecole : {{ archive.ecole }}</p>
-    <p>matiere : {{ archive.matiere }}</p>
-    <p>examen : {{ archive.examen }}</p>
-    <p>pays : {{ archive.pays }}</p>
-    <p>fichier : {{ archive.fichier }}</p>
-    <p>niveau : {{ archive.niveau }}</p>
-
-    <div class="space-x-4">
+    <p class="bg-gray-500 mt-2 p-3"> <span class="font-bold text-3xl">ecole :</span>  </span> <br> {{ archive.ecole }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">matiere :</span>  </span> <br> {{ archive.matiere }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">examen :</span>  </span> <br> {{ archive.examen }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">pays : </span> </span> <br> {{ archive.pays }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">niveau :</span>  </span> <br> {{ archive.niveau }}</p>
+    
+    <div class="bg-gray-500 ">
+        <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">fichier :</span>  </span> <br> {{ archive.fichier }}</p>
+        <button id="telecharger-archive" class="bg-gray-800 text-white text-xs m-6 py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Telecharger</a>
+    </div>
+    <div class="space-x-4 mt-4">
         <a  href="{% url 'home' %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">back</a>
 
         <span class="" id="like_count">{{archive.archive_like_count}}</span>
@@ -27,9 +28,6 @@
                 <path d="M8 14V20M8 20L4 20V9.99998H8L13.1956 3.93847C13.6886 3.3633 14.4642 3.11604 15.1992 3.29977L15.2467 3.31166C16.5885 3.64711 17.1929 5.21057 16.4258 6.36135L14 9.99998H18.5604C19.8225 9.99998 20.7691 11.1546 20.5216 12.3922L19.3216 18.3922C19.1346 19.3271 18.3138 20 17.3604 20M8 20H12" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </button>
-        
-
-        <button id="telecharger-archive" class="bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Télécharger le document de la bourse</button>
     </div>
 
     <div class="py-4">

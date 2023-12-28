@@ -1,6 +1,11 @@
 from django import forms
 from .models import Comment, Bourse, Postulant
 
+scholarship_types = (
+    ('partial', 'Partielle'),
+    ('full', "Complete"),
+)
+
 class BourseForm(forms.ModelForm):
     class Meta:
         model = Bourse

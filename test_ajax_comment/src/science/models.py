@@ -17,6 +17,7 @@ class Revue(models.Model):
     file = models.FileField(upload_to='revue_files/', default='')
     likes_revue = models.ManyToManyField(User, related_name='like_revu', default='None', blank='True')
     like_count_revu = models.BigIntegerField(default='0')
+    download_count = models.PositiveIntegerField(default=0)
     
     def number_like_revu(self):
         return self.likes_revue.count()

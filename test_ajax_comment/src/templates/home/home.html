@@ -53,7 +53,7 @@
                     
                     <a href="{% url 'event:saisir_event' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">Saisir Event</a>
                     <a href="{% url 'event:list_event' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">afficher Event pour entite</a>        
-                    <a href="" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">afficher event pour Admin</a>        
+                    <a href="{% url 'event:list_event_admin' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">afficher event pour Admin</a>        
                 </div>
             </div>
 
@@ -103,7 +103,7 @@
                 <div class="mt-4 flex space-x-4">
                     
                     <a href="{% url 'science:saisir_revue' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">Creer Une revue</a>
-                    <a href="" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">liste des revue admin</a>       
+                    <a href="{% url 'science:list_revue_admin' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">liste des revue admin</a>       
                     <a href="{% url 'science:list_revue' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">liste des revue entite</a>       
                 </div>
             </div>
@@ -115,9 +115,7 @@
                 </div>
                 <div class="mt-4 flex space-x-4">
                     
-                    <a href="" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">Creer Sondage</a>
-                    <a href="" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">liste des Sondages admin</a>       
-                    <a href="" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">liste des Sondages entite</a>       
+                    <a href="{% url 'agenda:index' %}" class="mt-4 text-black  px-4 py-2 border duration-300 rounded-lg hover:shadow-lg">Creer Evenement sur Calendrier</a>
                 </div>
             </div>
 

@@ -52,3 +52,406 @@ $(document).ready(function () {
 
 {% include 'comments/views.html' %}
 {% include 'comments/index.html' %}
+
+***************************************************************** Django sondage **************************************************************
+
+CARACTERES_REPONSE = [
+    ('RC', 'Réponse courte'),
+    ('P', 'Paragraphe'),
+    ('CC', 'Case à cocher'),
+    ('MC', 'Multiple Choix'),
+    ('LD', 'Liste déroulante'),
+    ('IF', 'Importer un fichier'),
+    ('GCM', 'Grille à Choix multiples'),
+    ('GCC', 'Grille à cases à cocher'),
+    ('D', 'Date'),
+    ('H', 'Heure'),
+    ('I', 'Image'),
+]
+
+# Create your models here.
+
+class Sondage(models.Model):
+    titre = models.CharField(max_length=200)
+    organisateur = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.titre
+
+class Question(models.Model):
+    TYPE_REPONSE_CHOICES = [
+        ('RC', 'Réponse courte'),
+        ('P', 'Paragraphe'),
+        # Ajoutez d'autres types de réponse au besoin
+    ]
+
+    sondage = models.ForeignKey(Sondage, on_delete=models.CASCADE)
+    type_reponse = models.CharField(max_length=2, choices=TYPE_REPONSE_CHOICES)
+    question_texte = models.TextField()
+    reponse_texte = models.TextField(blank=True, null=True)
+
+**********************************************************************  FIN  ******************************************************************
+
+
+**********************************************************  LISTE DE SONDAGE SOUS FORME DE TABLEAU ***************************************************
+
+<section class="items-center justify-between mx-auto">
+
+    <div class="w-full bg-blue-500 h-10">
+        <a href="{% url 'home' %}" class="bg-blue-500 text-white py-2 px-4 ml-2 rounded-lg">Retour</a>
+    </div>
+    <div class="max-w-screen-md mx-10 bg-gray-500">
+
+    </div>
+    <table class="container">
+        <thead>
+            <tr>
+                <th>no.</th>
+                <th>Questions</th>
+                <th>Reponse</th>
+                <th>Liens</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for quest in  question_obj %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ quest.question_test }}</td>
+                <td>
+                    <a class="waves-effect waves-light btn modal-trigger" href="#modal-{{forloop.counter}}">Resultat du sondage</a>
+                    <!-- Modal Structure -->
+                    <div id="modal-{{forloop.counter}}" class="modal">
+                        <div class="modal-content">
+                            <h4>Resultat du sondage</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Reponse</th>
+                                        <th>Percentage</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for answer in question.answers.all %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{answer.answer_text}}</td>
+                                        <td>{{answer.calculate_percentage}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Accepter</a>
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+
+                    <a href="/question/{{question.uid}}" target="_blank" class="waves-effect waves-light btn" >Ouvrir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+
+************************************************************************  FIN ************************************************************************
+
+
+************************************************************************** POLLS DJANGO **************************************************************
+*********************  models.py  ********************************************************************
+from django.db import models
+import uuid
+from django.contrib.auth.models import User
+
+class BaseModel(models.Model):
+    uid = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Question(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="questions")
+    question_text = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.question_text
+
+class Answer(BaseModel):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="answers")
+    answer_text = models.CharField(max_length=100)
+    counter = models.IntegerField(default=0)
+
+    def calculate_percentage(self):
+        answers = self.question.answers.all()
+        total_votes = sum(answer.counter for answer in answers)
+        
+        try:
+            return int((self.counter / total_votes) * 100)
+        except ZeroDivisionError:
+            return 0 
+
+    def __str__(self):
+        return self.answer_text
+
+************************ fin **************************************************************************
+
+************************************************* View.py **************************************************
+
+from django.shortcuts import render, redirect
+from .models import Question, Answer
+from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseServerError
+from django.core.exceptions import ObjectDoesNotExist
+
+
+# Create your views here.
+
+
+# Vue de creation du sondage
+@login_required
+def create_poll(request):
+    if request.method == 'POST':
+        question_text = request.POST.get('question')
+        answers = request.POST.getlist('answers')
+
+        #Verifions si la question et au moins une reponses sont presentes
+        if question_text and answers:
+            question_obj = Question.objects.create(
+                user=request.user,
+                question_text=question_text,
+            )
+
+            for answer in answers:
+                Answer.objects.create(answer_text=answer, question=question_obj)
+
+            messages.info(request, 'Sondage créé')
+            return render(request, 'question/create_poll.html')
+        else:
+            messages.error(request, 'Saisir au moins une reponses')
+
+    return render(request, 'question/create_poll.html')
+
+
+
+# affichage de la liste de sondage
+@login_required
+def liste_sondage_admin(request):
+    try:
+        questions = Question.objects.filter(user=request.user)
+        return render(request ,'question/liste_sondage_admin.html' ,{'questions' : questions})
+    except Exception as e:
+        print("une erreur s'est produite: {}".format(e))
+        return HttpResponseServerError("Une erreur s'est produite lors de la recuperation des sondages.")
+
+
+@login_required
+def detail_answers(request, question_uid):
+    try:
+        question_obj = Question.objects.filter(uid=question_uid, user=request.user)
+        context = {'question': question_obj}
+        return render(request, 'question/see_ansswers.html', context)
+    except Question.DoesNotExist:
+        return redirect('question:liste_sondage_admin')
+    except Exception as e:
+        print(e)
+        return redirect('question:liste_sondage_admin')
+
+
+
+@login_required
+@api_view(['POST'])
+@csrf_exempt
+def save_question_result(request):
+
+    # Récupération des données de la requête
+    data = request.data
+    question_uid = data.get('question_uid')
+    answer_uid = data.get('answer_uid')
+
+    # Vérification que les deux identifiants sont présents dans les données
+    if question_uid is None and answer_uid is None:
+        payload = {'data' : 'L\'identifiant de la question et l\'identifiant de la réponse sont tous deux requis.' , 'status' : False}
+        return Response(payload)
+
+    try:
+        # Récupération des objets Question et Answers correspondants aux identifiants
+        question_obj = Question.objects.get(uid = question_uid)
+        answer_obj  = Answer.objects.get(uid = answer_uid)
+
+    except ObjectDoesNotExist:
+        # Gestion de l'exception si l'un des objets n'existe pas
+        payload = {'data': 'Id de la question Invalide ou Id de la reponse invalid', 'status': False}
+        return Response(payload)
+
+    # Incrémentation du compteur de la réponse
+    answer_obj.counter += 1
+    answer_obj.save()
+
+    # Calcul du pourcentage et préparation de la réponse
+    payload = {'data' : question_obj.calculate_percentage() , 'status' : True}
+
+    # Envoi de la réponse
+    return Response(payload)
+
+
+@login_required
+def question_detail(request , question_uid):
+    try:
+        question_obj = Question.objects.get(uid = question_uid)
+        context = {'question' : question_obj}
+        return render(request , 'question.html' , context)
+
+    except Exception as e :
+        print(e)
+
+
+***************************************************** fin **************************************************
+
+
+************************************************* urls.py **************************************************
+
+from django.urls import path, include
+from .views import (
+   question_detail,
+   create_poll,
+   liste_sondage_admin,
+   save_question_result,
+   detail_answers,
+)
+
+app_name = 'question'
+urlpatterns = [
+    path('<uuid:question_uid>/', question_detail, name='question_detail'),
+    path('create_poll/' , create_poll , name="create_poll"),
+    path('liste_sondage_admin/' , liste_sondage_admin , name="liste_sondage_admin"),
+    path('detail_answers/<question_uid>' , detail_answers , name="detail_answers"),
+    path('question/<question_uid>/' , question_detail , name="question_detail"),
+    path('api/save_question_result/', save_question_result, name='save_question_result'),
+    path('save_question_result/', save_question_result, name='save_question_result'),
+    path('api-auth/', include('rest_framework.urls'))
+]
+***************************************************** fin **************************************************
+
+
+************************************************* View.py **************************************************
+***************************************************** fin **************************************************
+************************************************* View.py **************************************************
+***************************************************** fin **************************************************
+*************************************************************************** FIN **********************************************************************
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+
+<script>
+   $(document).ready(function () {
+       var calendar = $('#calendar').fullCalendar({
+           header: {
+               left: 'prev,next today',
+               center: 'title',
+               right: 'month,agendaWeek,agendaDay'
+           },
+           events: '/all_events',
+           selectable: true,
+           selectHelper: true,
+           editable: true,
+           eventLimit: true,
+           select: function (start, end, allDay) {
+               var title = prompt("Enter Event Title");
+               if (title) {
+                   var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
+                   var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
+                   $.ajax({
+                       type: "GET",
+                       url: '/add_event',
+                       data: {'title': title, 'start': start, 'end': end},
+                       dataType: "json",
+                       success: function (data) {
+                           calendar.fullCalendar('refetchEvents');
+                           alert("Added Successfully");
+                       },
+                       error: function (data) {
+                           alert('There is a problem!!!');
+                       }
+                   });
+               }
+           },
+           eventResize: function (event) {
+               var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
+               var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
+               var title = event.title;
+               var id = event.id;
+               $.ajax({
+                   type: "GET",
+                   url: '/update',
+                   data: {'title': title, 'start': start, 'end': end, 'id': id},
+                   dataType: "json",
+                   success: function (data) {
+                       calendar.fullCalendar('refetchEvents');
+                       alert('Event Update');
+                   },
+                   error: function (data) {
+                       alert('There is a problem!!!');
+                   }
+               });
+           },
+ 
+           eventDrop: function (event) {
+               var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
+               var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
+               var title = event.title;
+               var id = event.id;
+               $.ajax({
+                   type: "GET",
+                   url: '/update',
+                   data: {'title': title, 'start': start, 'end': end, 'id': id},
+                   dataType: "json",
+                   success: function (data) {
+                       calendar.fullCalendar('refetchEvents');
+                       alert('Event Update');
+                   },
+                   error: function (data) {
+                       alert('There is a problem!!!');
+                   }
+               });
+           },
+ 
+           eventClick: function (event) {
+               if (confirm("Are you sure you want to remove it?")) {
+                   var id = event.id;
+                   $.ajax({
+                       type: "GET",
+                       url: '/remove',
+                       data: {'id': id},
+                       dataType: "json",
+                       success: function (data) {
+                           calendar.fullCalendar('refetchEvents');
+                           alert('Event Removed');
+                       },
+                       error: function (data) {
+                           alert('There is a problem!!!');
+                       }
+                   });
+               }
+           },
+ 
+       });
+   });
+ 
+</script>

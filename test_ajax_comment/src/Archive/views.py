@@ -128,11 +128,16 @@ def archive_like(request):
 
 
 
+
 @login_required
 def telecharger_document_archive(request, archive_id):
     archive = get_object_or_404(Archive, pk=archive_id)
 
     if archive.fichier:
+        # Incrémenter le compteur de téléchargements
+        archive.download_count += 1
+        archive.save()
+
         response = HttpResponse(archive.fichier, content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{archive.fichier.name}"'
         return response

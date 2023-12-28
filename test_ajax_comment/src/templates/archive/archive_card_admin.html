@@ -2,7 +2,7 @@
 <div
   class="relative flex flex-col bg-white border hover:shadow-md rounded-xl transition duration-300 ease-in-out overflow-hidden group"
 >
-  <a href="{% url 'detail_archive_admin' archive_id=arch.id  %}">
+  <a href="{% url 'archive:detail_archive_admin' archive_id=arch.id  %}">
     <i
       class="absolute z-30 top-[130px] right-4 text-xl group-hover:text-white fa-solid fa-book-open transition duration-300 ease-in-out"
     ></i>
@@ -19,7 +19,8 @@
       <span class="text-xs text-green-600">{{arch.pays}}</span>
       <span class="text-xs">
         <i class="fa-solid fa-thumbs-up text-sky-500"></i>
-        0 telechargement
+        {{ arch.download_count }} telechargement <br>
+        {{ arch.number_like }} like(s)
       </span>
     </div>
   </a>

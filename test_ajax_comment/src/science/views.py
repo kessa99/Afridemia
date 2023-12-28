@@ -6,6 +6,7 @@ from .forms import *
 import os
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 
 # Create your views here.
 
@@ -30,35 +31,43 @@ def list_revue(request):
     revue = Revue.objects.all()
     context = {'revue': revue}
     return render(request, 'science/list_revue.html', context)
+
+@login_required
+def list_revue_admin(request):
+    revue = Revue.objects.all()
+    context = {'revue': revue}
+    return render(request, 'science/list_revue_admin.html', context)
     
+
 @login_required
 def modifie_revue(request, revue_id):
     revue = get_object_or_404(Revue, pk=revue_id)
+
     if request.method == 'POST':
         form = RevuForm(request.POST, instance=revue)
         if form.is_valid():
             form.save()
-            return redirect('', revue_id=revue_id)
-        else:
-            form = RevuForm(instance=revue)
-        context = {}
-        return render(request, '', context)
+            return redirect('science:details_revue_admin', revue_id=revue_id)
+    else:
+        form = RevuForm(instance=revue)
+    context = {
+        'form': form,
+        'revue': revue,
+    }
+
+    return render(request, 'science/modifie_revue.html', context)
 
 def supprime_revue(request, revue_id):
     revue = get_object_or_404(Revue, pk=revue_id)
     if request.method == 'POST':
         revue.delete()
-        return redirect('')
-    context = {}
-    return render(request, '', context)
+        return redirect('science:list_revue_admin')
+    context = {'revue':revue}
+    return render(request, 'science/supprime_revue.html', context)
 
 
 
-@login_required
-def list_revue_admin(request):
-    revue = Revue.objects.all()
-    context = {}
-    return render(request, '', context)
+
 
 
 @login_required
@@ -109,9 +118,8 @@ def detail_revue(request, revue_id):
 @login_required
 def details_revue_admin(request, revue_id):
     revue = get_object_or_404(Revue, pk=revue_id)
-    commentaire = Comment_revu.objects.filter(revue=revue)
-    context = {}
-    return render(request, '', context)
+    context = {'revue':revue}
+    return render(request, 'science/details_revue_admin.html', context)
 
 @login_required
 @require_POST
@@ -142,6 +150,9 @@ def telecharger_document_revue(request, revue_id):
     revue = get_object_or_404(Revue, pk=revue_id)
 
     if revue.file:
+        # Incrémente le champ download_count
+        Revue.objects.filter(id=revue.id).update(download_count=F('download_count') + 1)
+
         file_path = os.path.join(settings.MEDIA_ROOT, revue.file.name)
         with open(file_path, 'rb') as file:
             response = HttpResponse(file.read(), content_type='application/pdf')

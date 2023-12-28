@@ -22,3 +22,9 @@ def get_total_vote(pk):
     poll = get_object_or_404(Question, id=pk)
     vote= Vote.objects.filter(question=poll)
     return vote
+
+@register.filter
+def calculate_percentage(choice, total_votes):
+    if total_votes.count() == 0:
+        return 0
+    return (choice.count() / total_votes.count()) * 100

@@ -4,22 +4,26 @@
 
 {% block content %}
 
-<div class="pb-16">
-    <div class="bg-blue-500 text-white p-4 ">
-        Detail de la bourse pour l'admin
+<div class="my-16 py-16 px-16">
+    <div class="bg-blue-500 text-white p-4 font-bold text-4xl text-center">
+        {{ bourse.titre }} par {{ bourse.publicateur }}
     </div>
   
-    <h1>{{ bourse.titre }}</h1>
-    <p>publicateur : {{ bourse.publicateur }}</p>
-    <p>categorie : {{ bourse.categorie }}</p>
-    <p>financement : {{ bourse.financement }}</p>
-    <p>nature : {{ bourse.nature }}</p>
-    <p>lieu : {{ bourse.lieu }}</p>
-    <p>niveau : {{ bourse.niveau }}</p>
-    <p>description : {{ bourse.description }}</p>
-    <p>publicateur : {{ bourse.publicateur }}</p>
 
-    <div class="space-x-4">
+    <p class="bg-gray-500 mt-2 p-3"> <span class="font-bold text-3xl">  categorie :</span> <br> {{ bourse.categorie }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">  financement :</span> <br> {{ bourse.financement }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">  nature :</span> <br> {{ bourse.nature }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">  lieu </span> <br>: {{ bourse.lieu }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">  niveau :</span> <br> {{ bourse.niveau }}</p>
+    <p class="bg-gray-500 p-3"> <span class="font-bold text-3xl">  description :</span> <br> {{ bourse.description }}</p>
+
+
+    <div class="bg-gray-500 flex">
+        <p class=" rounded-lg p-3"> <span class="font-bold text-3xl"> fichier_a_joindre :</span>  <br> {{ bourse.fichier_a_joindre }}</p>
+        <button id="telecharger-revue" class="bg-gray-800 text-white text-xs m-6 py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Telecharger</a>
+    </div>
+
+    <div class="space-x-4 m-4">
         <a  href="{% url 'home' %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">back</a>
         <a  href="{% url 'bourse:modifie_bourse' bourse_id=bourse.id %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Modifier</a>
         <a  href="{% url 'bourse:supprime_bourse' bourse_id=bourse.id %}" class="my-4 bg-gray-800 text-white text-xs py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition">Supprimer</a>
